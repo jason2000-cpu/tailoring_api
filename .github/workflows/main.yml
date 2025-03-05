@@ -1,0 +1,38 @@
+name: Deploy API to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup SSH Key
+        run: |
+          echo "EMAIL_PASS=${{ secrets.EMAIL_PASS }}" >> .env
+          echo "EMAIL_USER=${{ secrets.EMAIL_USER }}" >> .env
+          echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy to VPS
+        run: |
+          ssh root@151.80.93.110 << 'EOF'
+          cd /var/www/tailoring_api  # Change to project directory
+          git pull origin master
+          npm install
+          npx prisma migrate deploy  # Run database migrations
+          npm run build  # Compile TypeScript
+          pm2 restart tailoring_api || pm2 start npm --name "tailoring_api" -- run start
+          exit
+          EOF
