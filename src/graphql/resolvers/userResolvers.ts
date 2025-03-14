@@ -222,6 +222,36 @@ const userResolvers = {
                 console.log(error);
                 return { status: "Error", message: "An Internal Server Error Occured"}
             }
+        },
+
+        toggleActivation: async (_: any, { userId }: any, { user_id }: { user_id: number }) => {
+            try {
+                const user: any = await prisma.users.findUnique({ where: { id: user_id}})
+                if (user.role !== 'ADMIN') throw new Error('Not Authorized')
+
+                const account = await prisma.users.findUnique({ where: { id: userId }});
+                if (!account) throw new Error("Account Not found");
+
+                if (account.accountStatus) {
+                    await prisma.users.update({
+                        where: { id: userId },
+                        data: { accountStatus: false }
+                    })
+
+                    return { status: 'Success', message: 'Account Deactivated Successfully'}
+                } else {
+                    await prisma.users.update({
+                        where: { id: userId },
+                        data: { accountStatus: true }
+                    });
+
+                    return { status: 'Success', message: 'Account Activated Successfully'}
+                }
+
+            } catch(error: any) {
+                console.log(error.message);
+                return { status: 'Error', message: error.message || 'An Internal Server Error Occured'}
+            }
         }
     },
 

@@ -370,6 +370,7 @@ export const typeDefs = gql`
         deleteBusiness(businessId: Int!): response!
         deleteFinancialRecord(id: Int!): response!
         markNotificatioinAsRead(id: ID!): Notifications!
+        toggleActivation(userId: Int!): response!
     }
 `
 
