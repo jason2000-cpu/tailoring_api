@@ -223,9 +223,6 @@ const ordersResolvers = {
                 const integerOrderIds = orderIds.map((id) => parseInt(id, 10)).filter((id) => !isNaN(id));
 
                 // check if a client has multiple orders so as to change active order status
-
-                console.log("INTEGER IDS:::", integerOrderIds);
-
                 for (let i in integerOrderIds) {
                     const order = await prisma.orders.findUnique({ where: { id: Number(integerOrderIds[i]) }});
                     // console.log("ORDER FOUND ON LOOP", order, "ID:::", integerOrderIds[i])
