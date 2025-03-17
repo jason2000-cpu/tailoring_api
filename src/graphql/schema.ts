@@ -297,8 +297,8 @@ export const typeDefs = gql`
     }
     
     input PaymentsInput {
-        paidAmount: Float!
-        totalAmount: Float!
+        paidAmount: Float
+        totalAmount: Float
     }
     
     input AddOrderInput {
