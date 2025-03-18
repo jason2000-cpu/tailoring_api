@@ -1,5 +1,4 @@
 import prisma from '../../prisma/prismaClient'
-import getUniqueIds from '../../utils/getUniqueIds';
 
 
 const ordersResolvers = {
@@ -23,6 +22,7 @@ const ordersResolvers = {
                 return { status: 'Error', message: 'An Internal Server Error Occured'}
             }
         },
+
         getOrder: async (_:any, { clientId }: { clientId: number}, { user_id }: { user_id: number }) => {
             try {
                 const user = await prisma.users.findUnique({ where: { id: user_id }});
