@@ -1,3 +1,4 @@
+import aggregateRecords from '../../utils/aggregateRecords'
 import prisma from '../../prisma/prismaClient';
 
 
@@ -33,6 +34,7 @@ const financialRecordsResolvers = {
                 // Determine date range based on groupBy
                 let formattedStartDate: Date = new Date();
                 let formattedEndDate: Date = new Date(); // Always end at today
+                formattedEndDate.setDate(formattedEndDate.getDate() + 1)
 
                 if (startDate && endDate) {
                     formattedStartDate = new Date(startDate);
@@ -44,7 +46,7 @@ const financialRecordsResolvers = {
                         formattedStartDate = new Date();
                         formattedStartDate.setDate(today.getDate() - 6); // Last 7 days including today
                     } else if (groupBy === "monthly") {
-                        formattedStartDate = new Date(today.getFullYear(), today.getMonth() - 11, 1); // Last 12 months
+                        formattedStartDate = new Date(today.getFullYear(), today.getMonth() - 10, 1); // Last 12 months
                     } else if (groupBy === "yearly") {
                         const earliestYearRecord = await prisma.financialRecord.findFirst({
                             where: { businessId: business.id },
@@ -91,20 +93,16 @@ const financialRecordsResolvers = {
                     profit: record.totalProfit
                 }));
 
-                console.log(`RECORDS FOUND::: ${groupBy} total::: ${records.length}::::`, records)
+                const aggregated = aggregateRecords(records)
 
-                return records;
+                // console.log(`RECORDS FOUND::: ${groupBy} total::: ${records.length}::::`, aggregated)
+                
+                return aggregated;
             } catch (error: any) {
                 console.error("Error in financialSummary:", error);
                 return { status: 'Error', message: 'An Internal Server Error Occurred' };
             }
         }
-        
-        
-        
-        
-        
-          
     },
 
     Mutation: {

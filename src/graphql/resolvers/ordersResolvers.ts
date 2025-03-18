@@ -1,5 +1,6 @@
 import prisma from '../../prisma/prismaClient'
 
+
 const ordersResolvers = {
     Query: {
         getBusinessOrders: async (_:any, __: any, { user_id }: { user_id: number }) => {
@@ -21,6 +22,7 @@ const ordersResolvers = {
                 return { status: 'Error', message: 'An Internal Server Error Occured'}
             }
         },
+
         getOrder: async (_:any, { clientId }: { clientId: number}, { user_id }: { user_id: number }) => {
             try {
                 const user = await prisma.users.findUnique({ where: { id: user_id }});
@@ -59,17 +61,19 @@ const ordersResolvers = {
                 const client = await prisma.clients.findUnique({ where: { id: customerId }})
                 if(!client) return { status: 'Error', message: `Customer With Id ${customerId} Not Found`}
 
-                await prisma.clients.update({ 
+                // update activeOrder status for client
+                const activeOrderUpdate = await prisma.clients.update({ 
                     where: {id: customerId}, 
                     data: { activeOrder: true }
-                })
+                });
+                console.log("ACTIVE ORDER STATUS UPDATED::", activeOrderUpdate)
 
-
-
+                // create order
                 const order = await prisma.orders.create({
                     data: { businessId: business.id, item,  clientId: customerId, description, completionStatus, collectionDate }
                 })
-
+                
+                // create order collection event
                 await prisma.events.create({
                     data: {
                         userId: user_id,
@@ -80,6 +84,7 @@ const ordersResolvers = {
                     }
                 })
 
+                // console.log("ADDING PAYMENTS:::", payments, payments.totalAmount, payments.paidAmount)
                 if (payments) {
                     const { totalAmount, paidAmount } = payments;
                     if (totalAmount === paidAmount ) {
@@ -215,7 +220,30 @@ const ordersResolvers = {
                 const business = await prisma.businesses.findUnique({ where: { userId: user_id}});
                 if(!business) return { status: 'Error', message: `Business with User Id : ${ user_id } Not Found`}
 
-                const integerOrderIds = orderIds.map((id) => parseInt(id, 10)).filter((id) => !isNaN(id))
+                const integerOrderIds = orderIds.map((id) => parseInt(id, 10)).filter((id) => !isNaN(id));
+
+                // check if a client has multiple orders so as to change active order status
+                for (let i in integerOrderIds) {
+                    const order = await prisma.orders.findUnique({ where: { id: Number(integerOrderIds[i]) }});
+                    // console.log("ORDER FOUND ON LOOP", order, "ID:::", integerOrderIds[i])
+                    const clientId = order?.clientId;
+                    const clientOrdersCount = await prisma.orders.count({ 
+                        where: { 
+                            clientId, 
+                            completionStatus:  { in: [ 'InProgress', 'InProgress']}
+                        }
+                    })
+
+                    if ( clientOrdersCount === 1 ) {
+                        await prisma.clients.update({
+                            where: { id: clientId},
+                            data: { activeOrder: false }
+                        })
+                    } else {
+                        continue;
+                    }
+                    
+                }
 
                 await prisma.orders.deleteMany({
                     where: {
@@ -226,7 +254,7 @@ const ordersResolvers = {
                 });
 
                 const ordersLength = orderIds.length;
-                return { 
+                return {
                     status: 'Success', 
                     message: `${ordersLength} ${ ordersLength == 1 ? 'Order' : 'Orders'} Deleted Successfully`
                 }

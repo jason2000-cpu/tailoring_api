@@ -113,7 +113,7 @@ const userResolvers = {
         },
 
         updateUserProfile: async (_: any, {  Fname, Sname, email, phone, password, profile_url }: any, { user_id } : { user_id: number }) => {
-            console.log("PROFILE URL:::", profile_url, Fname, Sname, email, phone, password)
+            // console.log("PROFILE URL:::", profile_url, Fname, Sname, email, phone, password)
             try {
                 const user = await prisma.users.findUnique({ where: { id: user_id }});
                 if(!user) throw new Error('User Not Found')

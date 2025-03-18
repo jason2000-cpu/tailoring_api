@@ -9,7 +9,7 @@ dotenv.config();
 const app: Application = express()
 
 const corsOptions = {
-    origin: ['http://localhost:5173', 'https://antiago.goymarey.com', 'https://tailoring-system.vercel.app' ],
+    origin: ['http://localhost:5173', 'http://192.168.1.14:5173', 'https://antiago.goymarey.com', 'https://tailoring-system.vercel.app' ],
     credentials: true,
 }
 
