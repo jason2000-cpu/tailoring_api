@@ -16,9 +16,12 @@
       }
     ],
     "env": {
-        "DATABASE_URL":"postgresql://localhost:admin123@localhost:5432/tailoringsysdb",
-        "EMAIL_USER":"goymareycompany@gmail.com",
-        "EMAIL_PASS":"metmgdqhbmcauumb",
-        "JWT_SECRET_KEY":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+        "DATABASE_URL":"postgresql://neondb_owner:npg_F1ck4QlxMpOJ@ep-autumn-pond-ai71del1-pooler.c-4.us-east-1.aws.neon.tech/neondb?channel_binding=require&sslmode=require",
+        "EMAIL_USER":"hello@jafrictech.com",
+        "EMAIL_PASS":"@JafricTech25",
+        "JWT_SECRET_KEY":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+        "PORT": 3000,
+        "NODE_ENV": "production",
+        "FRONTEND_URL":"https://mavazidesk.vercel.app"
     }
   }
