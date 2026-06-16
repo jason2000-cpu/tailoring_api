@@ -16,7 +16,7 @@
       }
     ],
     "env": {
-        "DATABASE_URL":"postgresql://postgres:Admin456@151.80.93.110:5432/tailoringsysdb",
+        "DATABASE_URL":"postgresql://localhost:admin123@localhost:5432/tailoringsysdb",
         "EMAIL_USER":"goymareycompany@gmail.com",
         "EMAIL_PASS":"metmgdqhbmcauumb",
         "JWT_SECRET_KEY":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"

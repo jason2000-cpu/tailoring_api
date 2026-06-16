@@ -11,7 +11,8 @@ const PORT =process.env.PORT || 3000
 
 
 const server = new ApolloServer({
-    schema
+    schema,
+    introspection: true
 })
 
 const startServer = async () => {
@@ -23,8 +24,11 @@ const startServer = async () => {
         expressMiddleware(server, { 
             context:  async({ req, res }: { req: Request; res: Response}) => {
 
+                console.log("[OPERATION_NAME]:", req.body?.operationName)
+
                 const isLoginMutation = req.body?.operationName === "UserLogin"
-                if(isLoginMutation) return { req, res }
+                const isIntrospection = req.body?.operationName === 'IntrospectionQuery'
+                if(isLoginMutation || isIntrospection) return { req, res }
 
                 // const isCreateUserMutation = req.body?.operationName === "CreateUser"
                 // if(isCreateUserMutation) return { req, res }
