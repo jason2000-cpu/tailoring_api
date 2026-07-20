@@ -4,8 +4,8 @@ import { toZonedTime, toDate } from 'date-fns-tz';
 
 const timeZone = 'Africa/Nairobi';
 
-async function synchronizeFinancialRecords(params: any) {
-    const { model, action, args } = params;
+async function synchronizeFinancialRecords(args: any) {
+    
     // console.log("MODEL::",model, "ACTION::", action, "ARGS::",args)
 
     const businessId = args.data?.businessId || args.where?.businessId;

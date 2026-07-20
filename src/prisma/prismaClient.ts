@@ -14,7 +14,7 @@ const prisma = new PrismaClient({ adapter }).$extends({
                     (model === 'Income' || model === 'Expenses') &&
                     ['create', 'update', 'delete'].includes(operation)
                 ) {
-                    await synchronizeFinancialRecords({ model, action: operation, args })
+                    await synchronizeFinancialRecords(args)
                 } else if(
                     model === 'Orders' &&
                     ['create', 'update', 'delete'].includes(operation)

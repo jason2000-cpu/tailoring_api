@@ -11,11 +11,12 @@ interface Context {
 const authResolvers = {
     Mutation: {
         userLogin: async (_: any, { email, password }: any, { res }: Context) => {
+            console.log("USER LOGIN DETAILS >>>", email, password);
             try {
                 const user = await prisma.users.findUnique({ where: { email }});
     
                 if (!user) throw new Error('User Not Found');
-                // console.log("USER FOUND::", user);
+                console.log("USER FOUND::", user);
                 
                 const valid = await bcrypt.compare(password, user.password);
     

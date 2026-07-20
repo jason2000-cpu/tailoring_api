@@ -73,7 +73,7 @@ const financialRecordsResolvers = {
                 // Fetch aggregated data
                 const financialRecords: any = await prisma.$queryRaw`
                     SELECT 
-                        DATE_TRUNC(${dateTrunc}, "date")::date AS "date",
+                        DATE_TRUNC(${dateTrunc}, "date")::date AS "truncDate",
                         TO_CHAR(DATE_TRUNC(${dateTrunc}, "date"), ${dateFormat}) AS "formattedDate",
                         SUM("income") AS "totalIncome",
                         SUM("expenses") AS "totalExpenses",
@@ -82,8 +82,8 @@ const financialRecordsResolvers = {
                     WHERE "businessId" = ${business.id}
                     AND "date" >= ${formattedStartDate.toISOString()}::date
                     AND "date" <= ${formattedEndDate.toISOString()}::date
-                    GROUP BY "date", TO_CHAR(DATE_TRUNC(${dateTrunc}, "date"), ${dateFormat})
-                    ORDER BY "date" ASC;
+                    GROUP BY "truncDate", "formattedDate"
+                    ORDER BY "truncDate" ASC;
                 `;
 
                 const records = financialRecords.map((record: any) => ({
@@ -93,9 +93,11 @@ const financialRecordsResolvers = {
                     profit: record.totalProfit
                 }));
 
-                const aggregated = aggregateRecords(records)
+                console.log("RECORDS >>>", records);
 
-                // console.log(`RECORDS FOUND::: ${groupBy} total::: ${records.length}::::`, aggregated)
+                const aggregated = aggregateRecords(records);
+
+                console.log(`RECORDS FOUND::: ${groupBy} total::: ${records.length}::::`, aggregated);
                 
                 return aggregated;
             } catch (error: any) {
