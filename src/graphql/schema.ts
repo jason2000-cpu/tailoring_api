@@ -367,6 +367,7 @@ export const typeDefs = gql`
         updateEvent(eventId: Int!, title: String, start: Date, end: Date, description: String): response!
         deleteEvent(eventId: Int!): response!
         updateBusinessDetails(businessId: Int!, name: String, logo: String, phone: String, email: String, currency: String, address: String ): response!
+        updateBusinessLogo(businessId: String!, logo: String!): response!
         deleteBusiness(businessId: Int!): response!
         deleteFinancialRecord(id: Int!): response!
         markNotificatioinAsRead(id: ID!): Notifications!

@@ -10,7 +10,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 
@@ -47,7 +46,7 @@ model Businesses {
   phone              String               @default("+254797955092")
   address            String               @default("Nairobi, Kenya")
   currency           String               @default("Ksh")
-  logo               String               @default("/static/images/Vector.png")
+  logo               String?
   userId             Int                  @unique
   user               Users                @relation("BusinessOwner", fields: [userId], references: [id], onDelete: Cascade)
   clients            Clients[]            @relation("BusinessClients")
