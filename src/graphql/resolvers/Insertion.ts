@@ -1,4 +1,4 @@
-import prisma from "../../prisma/prismaClient";
+import prisma from "../../lib/prismaClient";
 import { subDays, subMonths, subYears, startOfDay } from "date-fns";
 
 async function insertTestIncomeForTailoringBusiness() {

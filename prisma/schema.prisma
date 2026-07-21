@@ -6,12 +6,18 @@
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
+generator pothos {
+  provider = "prisma-pothos-types"
+  clientOutput = "../generated/prisma"
+  output = "../src/lib/pothos-prisma-types.ts"
+}
 
 enum Role {
   ADMIN
@@ -25,7 +31,7 @@ enum CompletionStatus {
 }
 
 model Users {
-  id                Int                  @id @default(autoincrement())
+  id                String              @id @default(cuid())
   Fname             String
   Sname             String
   email             String               @unique
@@ -40,14 +46,14 @@ model Users {
 }
 
 model Businesses {
-  id                 Int                  @id @default(autoincrement())
+  id                 String               @id @default(cuid())
   name               String               @default("Santiago Tailoring")
   email              String               @default("santiagotailoring@gmail.com")
   phone              String               @default("+254797955092")
   address            String               @default("Nairobi, Kenya")
   currency           String               @default("Ksh")
   logo               String?
-  userId             Int                  @unique
+  userId             String               @unique
   user               Users                @relation("BusinessOwner", fields: [userId], references: [id], onDelete: Cascade)
   clients            Clients[]            @relation("BusinessClients")
   orders             Orders[]             @relation("BusinessOrders")
@@ -58,12 +64,12 @@ model Businesses {
 
 
 model Clients {
-  id                 Int                 @id @default(autoincrement())
+  id                 String              @id @default(cuid())
   Fname              String
   Sname              String
   email              String?
   phone              String              @unique
-  businessId         Int
+  businessId         String
   activeOrder        Boolean             @default(false)
   business           Businesses          @relation("BusinessClients", fields: [businessId], references: [id], onDelete: Cascade)
   measurements       Measurements?       @relation("ClientMeasurements")
@@ -71,8 +77,8 @@ model Clients {
 }
 
 model Notifications {
-  id              Int         @id  @default(autoincrement())
-  userId          Int
+  id              String      @id @default(cuid())
+  userId          String
   user            Users       @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt       DateTime    @default(now())
   read            Boolean
@@ -81,8 +87,8 @@ model Notifications {
 }
 
 model Measurements {
-  id              Int         @id  @default(autoincrement())
-  clientId        Int         @unique
+  id              String      @id @default(cuid())
+  clientId        String      @unique
   client          Clients     @relation("ClientMeasurements", fields: [clientId], references: [id], onDelete: Cascade)
   height          String
   shoulders       String
@@ -94,21 +100,21 @@ model Measurements {
 
 
 model Orders {
-  id                   Int                @id   @default(autoincrement())
+  id                   String            @id @default(cuid())
   item                 String
   description          String?
   collectionDate       DateTime
   completionStatus     CompletionStatus   @default(InProgress)
-  businessId           Int
+  businessId           String
   business             Businesses         @relation("BusinessOrders", fields: [businessId], references: [id], onDelete: Cascade)
-  clientId             Int
+  clientId             String
   client               Clients            @relation("ClientOrders", fields: [clientId], references: [id], onDelete: Cascade)
   payments             Payments?          @relation("OrderPayment")
 }
 
 model Payments {
-  id              Int         @id @default(autoincrement())
-  orderId         Int         @unique
+  id              String      @id @default(cuid())
+  orderId         String      @unique
   order           Orders      @relation("OrderPayment", fields: [orderId], references: [id], onDelete: Cascade)
   paidAmount      Float
   totalAmount     Float
@@ -116,9 +122,9 @@ model Payments {
 }
 
 model Income {
-  id                  Int             @id  @default(autoincrement())
+  id                  String          @id @default(cuid())
   amount              Float
-  businessId          Int
+  businessId          String
   business            Businesses      @relation("BusinessIncome", fields: [businessId], references: [id], onDelete: Cascade)
   description         String
   createdAt           DateTime        @default(dbgenerated("date_trunc('day', now())")) @db.Timestamptz
@@ -126,9 +132,9 @@ model Income {
 }
 
 model Expenses {
-  id                  Int              @id  @default(autoincrement())
+  id                  String           @id @default(cuid())
   amount              Float
-  businessId          Int
+  businessId          String
   business            Businesses       @relation("BusinessExpenses", fields: [businessId], references: [id], onDelete: Cascade)
   description         String
   createdAt           DateTime         @default(dbgenerated("date_trunc('day', now())")) @db.Timestamptz
@@ -136,8 +142,8 @@ model Expenses {
 }
 
 model FinancialRecord {
-  id                  Int              @id  @default(autoincrement())
-  businessId          Int
+  id                  String          @id @default(cuid())
+  businessId          String
   business            Businesses       @relation("BusinessFinancialRecords", fields: [businessId], references: [id], onDelete: Cascade )
   date                DateTime
   income              Float            @default(0)
@@ -150,11 +156,11 @@ model FinancialRecord {
 }
 
 model Events {
-  id                Int          @id  @default(autoincrement())
+  id                String       @id @default(cuid())
   title             String
   start             DateTime
   end               DateTime
   description       String?
-  userId            Int
+  userId            String
   user              Users        @relation("UserEvents", fields:[userId], references: [id], onDelete: Cascade)
 }

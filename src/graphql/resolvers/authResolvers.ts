@@ -1,4 +1,4 @@
-import prisma from '../../prisma/prismaClient'
+import prisma from '../../lib/prismaClient'
 import { Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
 import { generateJWTToken } from '../../utils/jwt';

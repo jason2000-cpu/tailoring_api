@@ -1,4 +1,4 @@
-import prisma from '../../prisma/prismaClient';
+import prisma from '../../lib/prismaClient';
 import { PubSub } from "graphql-subscriptions"
 
 const pubsub = new PubSub();

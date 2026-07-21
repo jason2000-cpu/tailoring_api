@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-import { Role, CompletionStatus } from ".prisma/client";
-import prisma from "../prisma/prismaClient";
+import { Role, CompletionStatus } from "../generated/prisma";
+import prisma from "../lib/prismaClient";
 import { hashPassword } from "../utils/authUtils";
 import synchronizeFinancialRecords from "../middleware/synchronizeFinancialRecords";
 
@@ -38,22 +38,27 @@ async function main() {
 
   // Admin user
 
-  await prisma.users.upsert({
-    where: { email },
-    update: {
-      password: hashedPassword,
-      role: Role.ADMIN,
-      Fname,
-      Sname,
-    },
-    create: {
-      email,
-      password: hashedPassword,
-      Fname,
-      Sname,
-      role: Role.ADMIN,
-    },
-  });
+  try {
+    await prisma.users.upsert({
+      where: { email },
+      update: {
+        password: hashedPassword,
+        role: Role.ADMIN,
+        Fname,
+        Sname,
+      },
+      create: {
+        email,
+        password: hashedPassword,
+        Fname,
+        Sname,
+        role: Role.ADMIN,
+      },
+    });
+  } catch (e) {
+    console.dir(e, { depth: null });
+    throw e;
+  }
 
   console.log(`Admin user ready: ${email}`);
 

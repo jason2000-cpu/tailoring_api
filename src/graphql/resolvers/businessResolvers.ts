@@ -1,5 +1,5 @@
 import { StorageService } from "../../services/storageService"
-import prisma from '../../prisma/prismaClient';
+import prisma from '../../lib/prismaClient';
 
 
 const businessResolvers = {

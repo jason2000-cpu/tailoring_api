@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs'
-import prisma from '../../prisma/prismaClient'
+import prisma from '../../lib/prismaClient'
 import { validateEmail, validatePassword } from '../../utils/validateUserInput';
 import { generateJWTToken, verifyToken } from '../../utils/jwt';
 import { sendPassResetInstructionsMail, sendUserLoginDetails } from '../../services/emailService';

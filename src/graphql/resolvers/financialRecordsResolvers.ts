@@ -1,5 +1,5 @@
 import aggregateRecords from '../../utils/aggregateRecords'
-import prisma from '../../prisma/prismaClient';
+import prisma from '../../lib/prismaClient';
 
 
 const financialRecordsResolvers = {

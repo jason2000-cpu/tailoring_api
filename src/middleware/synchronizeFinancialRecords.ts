@@ -1,4 +1,4 @@
-import prisma from "../prisma/prismaClient";
+import prisma from "../lib/prismaClient";
 import { startOfDay } from 'date-fns'
 import { toZonedTime, toDate } from 'date-fns-tz';
 
