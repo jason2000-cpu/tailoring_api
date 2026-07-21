@@ -14,6 +14,7 @@ import measurementsResolvers from "./resolvers/measurementsResolvers"
 
 export const typeDefs = gql`
     scalar Date
+    scalar Upload
 
     type User {
         id: ID!
@@ -48,7 +49,7 @@ export const typeDefs = gql`
         id: ID!
         Fname: String!
         Sname: String!
-        email: String!
+        email: String
         phone: String!
         activeOrder: Boolean!
         measurements: Measurements
@@ -348,6 +349,7 @@ export const typeDefs = gql`
         passwordReset(toke: String!, newPassword: String!): response!
         updateUserProfile( Fname: String, Sname: String, email: String, phone: String, password: String, profile_url: String): response!
         updateUser(input: UpdateUserInput!): response!
+        updateUserProfilePic(image: Upload!): response!
         deleteUser(userIds: [String!]!): response!
         addIncome(amount: Float!, description: String!, category: String!): response!
         updateIncome(incomeId: Int!, amount: Float, description: String, category: String): response!
@@ -367,7 +369,7 @@ export const typeDefs = gql`
         updateEvent(eventId: Int!, title: String, start: Date, end: Date, description: String): response!
         deleteEvent(eventId: Int!): response!
         updateBusinessDetails(businessId: Int!, name: String, logo: String, phone: String, email: String, currency: String, address: String ): response!
-        updateBusinessLogo(businessId: String!, logo: String!): response!
+        updateBusinessLogo(businessId: String!, logo: Upload!): response!
         deleteBusiness(businessId: Int!): response!
         deleteFinancialRecord(id: Int!): response!
         markNotificatioinAsRead(id: ID!): Notifications!

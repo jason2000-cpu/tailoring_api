@@ -3,6 +3,7 @@ import prisma from '../../prisma/prismaClient'
 import { validateEmail, validatePassword } from '../../utils/validateUserInput';
 import { generateJWTToken, verifyToken } from '../../utils/jwt';
 import { sendPassResetInstructionsMail, sendUserLoginDetails } from '../../services/emailService';
+import { StorageService } from '../../services/storageService';
 
 
 const userResolvers = {
@@ -195,6 +196,25 @@ const userResolvers = {
             } catch(error: any) {
                 console.log(error);
                 return { status: 'Success', message: 'An Internal Server Error Occured'}
+            }
+        },
+
+
+        updateUserProfilePic : async (_: any, { image }: any, { user_id }: { user_id: number }) => {
+            try {
+                const user = await prisma.users.findUnique({ where: { id: user_id }});
+                if(!user || user.role !== 'USER') return { status: 'Error', message: 'Not Authorized'}
+
+                const key = await StorageService.uploadFile(image, `${user_id}`);
+
+                await prisma.users.update({
+                    where: { id: user_id },
+                    data: { profile_url: key }
+                })
+
+                return { status: "Success", message: "Business Profile Picture Updated Successfully" }
+            } catch (error: any) {
+                return { status: "Error", message: error.message || 'An Unknown Error Occured'}
             }
         },
 

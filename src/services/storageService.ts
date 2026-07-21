@@ -5,7 +5,7 @@ import { s3 } from '../config/storage'
 
 
 export class StorageService {
-    static async uploadFile(file: any, id: string) {
+    static async uploadFile(file: Promise<any>, id: string) {
         try {
             const { createReadStream, filename, mimetype } = await file;
 

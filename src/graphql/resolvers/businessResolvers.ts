@@ -74,8 +74,8 @@ const businessResolvers = {
                 }
 
                 return { status: "Success", message: "Business Profile Picture Updated Successfully"}
-            } catch (error) {
-                
+            } catch (error: any) {
+                return { status: "Error", message: error.message || 'An Unknown Error Occured'}
             }
         },
 

@@ -93,11 +93,7 @@ const financialRecordsResolvers = {
                     profit: record.totalProfit
                 }));
 
-                console.log("RECORDS >>>", records);
-
                 const aggregated = aggregateRecords(records);
-
-                console.log(`RECORDS FOUND::: ${groupBy} total::: ${records.length}::::`, aggregated);
                 
                 return aggregated;
             } catch (error: any) {
