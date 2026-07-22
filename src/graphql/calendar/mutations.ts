@@ -20,7 +20,7 @@ builder.mutationFields((t) => ({
 
                 await prisma.events.create({
                     data: { 
-                        userId: user?.id, 
+                        userId: user?.id!, 
                         title, start, end, description 
                     }
                 })

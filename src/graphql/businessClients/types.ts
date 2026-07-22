@@ -11,7 +11,7 @@ const BusinessclientModel = builder.prismaObject('Clients', {
         Sname: t.exposeString('Sname'),
         email: t.exposeString('email'),
         phone: t.exposeString('phone'),
-        // activeOrder: t.exposeBoolean('activeOrder'),
+        activeOrder: t.exposeBoolean('activeOrder'),
         measurements: t.relation('measurements'),
         orders: t.relation('orders'),
     })

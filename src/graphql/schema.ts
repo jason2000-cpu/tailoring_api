@@ -6,6 +6,9 @@ import './expenses';
 import './financialRecords';
 import './income';
 import './orders';
+import './notifications';
+import './calendar';
+import './users';
 
 builder.mutationType({})
 builder.queryType({})
@@ -245,13 +248,13 @@ export const schema = builder.toSchema();
 //         events: [Event]
 //     }
 
-//     input BusinessInput {
-//         name: String!
-//         email: String!
-//         phone: String! 
-//         currency: String
-//         address: String!
-//     }
+    // input BusinessInput {
+    //     name: String!
+    //     email: String!
+    //     phone: String! 
+    //     currency: String
+    //     address: String!
+    // }
 
 //     input BusinessUpdateInput {
 //         businessId: Int!

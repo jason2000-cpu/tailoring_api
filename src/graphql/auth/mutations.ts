@@ -3,7 +3,8 @@ import { generateAccessToken } from "../../utils/authUtils";
 import { Context } from "../../utils/types";
 import { builder } from "../builder";
 import { AuthResponseRef, SignInInput } from "./types";
-
+import { sendPassResetInstructionsMail } from '../../services/emailService';
+import { generateJWTToken, verifyToken } from '../../utils/jwt';
 
 
 builder.mutationFields((t) => ({
@@ -52,6 +53,69 @@ builder.mutationFields((t) => ({
             const { res } = ctx;
             res.clearCookie("token", { httpOnly: true, secure: true });
             return { success: true , message: 'Logged out Successfully'}
+        }
+    }),
+
+    passwordResetRequest: t.field({
+        type: AuthResponseRef,
+        args: {
+            email: t.arg.string({ required: true })
+        },
+        resolve: async (parent: any, { email }: any, ctx: Context) => {
+            const { prisma } = ctx;
+            try {
+                const user = await prisma.users.findUnique({ where: { email }});
+
+                if (!user) throw new Error(`User with the email ${email} does not exist`);
+
+                const reset_password_token = generateJWTToken(user)
+
+                sendPassResetInstructionsMail(email, reset_password_token);
+
+                return { 
+                    success: true, 
+                    message: 'Password reset instructions have been sent to your email'
+                };
+
+            } catch (error: any) {
+                // console.log(error.message);
+                return { 
+                    success: false, 
+                    message: error.message || 'An Internal Server Error Occured'
+                }
+            }            
+        }
+    }),
+
+    passwordReset: t.field({
+        type: AuthResponseRef,
+        args: {
+            token: t.arg.string({ required: true }),
+            newPassword: t.arg.string({ required: true })
+        },
+        resolve: async (parent: any, { token, newPassword }: any, ctx: Context) => {
+            const { prisma } = ctx;
+            try {
+                const payload = verifyToken(token);
+
+                const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+                await prisma.users.update({
+                    where: { id: payload.user.id },
+                    data: { password: hashedPassword }
+                })
+
+                return { 
+                    success: true, 
+                    message: 'Password Reset Successful'
+                }
+
+            } catch (error: any) {
+                return { 
+                    success: false, 
+                    message: error.message || 'An Internal Server Error Occured'
+                }
+            }
         }
     })
 }))
