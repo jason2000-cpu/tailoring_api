@@ -4,6 +4,7 @@ import './business';
 import './businessClients';
 import './expenses';
 import './financialRecords';
+import './income';
 
 builder.mutationType({})
 builder.queryType({})
@@ -116,14 +117,14 @@ export const schema = builder.toSchema();
 //         payments: Payments
 //     }
 
-//     type Income {
-//         id: ID!
-//         amount: Float!
-//         businessId: Int!
-//         category: String!
-//         description: String!
-//         createdAt: Date!
-//     }
+    // type Income {
+    //     id: ID!
+    //     amount: Float!
+    //     businessId: Int!
+    //     category: String!
+    //     description: String!
+    //     createdAt: Date!
+    // }
 
     // type Expenses {
     //     id: ID!
