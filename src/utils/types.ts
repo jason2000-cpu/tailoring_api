@@ -20,3 +20,5 @@ export interface ApiResponse<T = unknown> {
     role?: Role 
     data?: T
 }
+
+export type groupBy = "daily" | "monthly" | "yearly"

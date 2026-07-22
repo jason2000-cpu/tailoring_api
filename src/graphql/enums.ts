@@ -5,3 +5,11 @@ import { builder } from "./builder";
 export const RoleEnum = builder.enumType(Role, {
     name: 'RoleEnum'
 } )
+
+export const GroupByEnum = builder.enumType('GroupBy', {
+    values: {
+        DAILY: { value: 'daily' },
+        MONTHLY: { value: 'monthly' },
+        YEARLY: { value: 'yearly' }
+    }
+})

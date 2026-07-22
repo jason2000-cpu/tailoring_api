@@ -1,8 +1,9 @@
 import { builder } from "./builder";
-import './auth'
-import './business'
-import './businessClients'
-import './expenses'
+import './auth';
+import './business';
+import './businessClients';
+import './expenses';
+import './financialRecords';
 
 builder.mutationType({})
 builder.queryType({})
@@ -133,16 +134,16 @@ export const schema = builder.toSchema();
     //     createdAt: Date!
     // }
     
-//     type FinancialRecord {
-//         id: ID!
-//         businessId: Int!
-//         date: Date!
-//         income: Float!
-//         expenses: Float!
-//         profit: Float!
-//         createdAt: Date!
-//         updatedAt: Date!
-//     }
+    // type FinancialRecord {
+    //     id: ID!
+    //     businessId: Int!
+    //     date: Date!
+    //     income: Float!
+    //     expenses: Float!
+    //     profit: Float!
+    //     createdAt: Date!
+    //     updatedAt: Date!
+    // }
 
     // type Event {
     //     id: ID!
