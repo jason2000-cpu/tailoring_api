@@ -39,3 +39,6 @@ export const MeasurementsResponseRef = builder.objectRef<ApiResponse>('Measureme
         })
     })
 })
+
+
+export default MeasurementsModel;

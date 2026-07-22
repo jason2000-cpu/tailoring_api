@@ -1,3 +1,4 @@
+import { CompletionStatus } from "../generated/prisma";
 import { Role } from "../generated/prisma";
 import { builder } from "./builder";
 
@@ -12,4 +13,8 @@ export const GroupByEnum = builder.enumType('GroupBy', {
         MONTHLY: { value: 'monthly' },
         YEARLY: { value: 'yearly' }
     }
+})
+
+export const CompletionStatusEnum = builder.enumType(CompletionStatus, {
+    name: 'CompletionStatusEnum'
 })

@@ -5,6 +5,7 @@ import './businessClients';
 import './expenses';
 import './financialRecords';
 import './income';
+import './orders';
 
 builder.mutationType({})
 builder.queryType({})
@@ -106,16 +107,16 @@ export const schema = builder.toSchema();
 //         createdAt: Date!
 //     }
 
-//     type Order {
-//         id: ID!
-//         clientId: Int!
-//         client: Clients,
-//         completionStatus: String!
-//         description: String
-//         item: String!
-//         collectionDate: Date!
-//         payments: Payments
-//     }
+    // type Order {
+    //     id: ID!
+    //     clientId: Int!
+    //     client: Clients,
+    //     completionStatus: String!
+    //     description: String
+    //     item: String!
+    //     collectionDate: Date!
+    //     payments: Payments
+    // }
 
     // type Income {
     //     id: ID!

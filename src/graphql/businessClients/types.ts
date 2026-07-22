@@ -1,6 +1,7 @@
 import { Clients } from "../../generated/prisma";
 import { ApiResponse } from "../../utils/types";
 import { builder } from "../builder";
+import { addMeasurementsInput } from "../measurements/types";
 
 
 const BusinessclientModel = builder.prismaObject('Clients', {
@@ -11,8 +12,8 @@ const BusinessclientModel = builder.prismaObject('Clients', {
         email: t.exposeString('email'),
         phone: t.exposeString('phone'),
         // activeOrder: t.exposeBoolean('activeOrder'),
-        // measurements: t.relation('measurements'),
-        // orders: t.relation('orders'),
+        measurements: t.relation('measurements'),
+        orders: t.relation('orders'),
     })
 })
 
@@ -22,9 +23,9 @@ export const addClientInput = builder.inputType('addClientInput', {
         Sname: t.string({ required: true}), 
         email: t.string({ required: true}), 
         phone: t.string({ required: true}), 
-        // measurements: t.field({
-        //     type: 
-        // }),
+        measurements: t.field({
+            type: addMeasurementsInput,
+        }),
     })
 })
 
@@ -39,3 +40,5 @@ export const BusinessClientsResponseRef = builder.objectRef<ApiResponse>('Busine
         })
     })
 })
+
+export default BusinessclientModel
