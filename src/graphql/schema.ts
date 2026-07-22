@@ -75,27 +75,27 @@ export const schema = builder.toSchema();
     //     orders: [Order]
     // }
 
-//     type Notifications {
-//         id: ID!
-//         userId: Int!
-//         read: Boolean!
-//         message: String!
-//         type: String!
-//         createdAt: Date!
+    // type Notifications {
+    //     id: ID!
+    //     userId: Int!
+    //     read: Boolean!
+    //     message: String!
+    //     type: String!
+    //     createdAt: Date!
 
-//     }
+    // }
 
-//     type Measurements {
-//         id: ID!
-//         clientId: Int
-//         client: Clients
-//         height: String
-//         shoulders: String
-//         hand: String
-//         chest: String
-//         waist: String
-//         hips: String
-//     }
+    // type Measurements {
+    //     id: ID!
+    //     clientId: Int
+    //     client: Clients
+    //     height: String
+    //     shoulders: String
+    //     hand: String
+    //     chest: String
+    //     waist: String
+    //     hips: String
+    // }
     
 //     type Payments {
 //         id: ID!
