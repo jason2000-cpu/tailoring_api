@@ -25,9 +25,11 @@ const startServer = async () => {
             context:  async({ req, res }: { req: Request; res: Response}) => {
 
                 console.log("[OPERATION_NAME]:", req.body?.operationName)
+                const query = req.body?.query ?? "";
+
 
                 const isLoginMutation = req.body?.operationName === "UserLogin"
-                const isIntrospection = req.body?.operationName === 'IntrospectionQuery'
+                const isIntrospection = query.includes("__schema") || query.includes("__type");
                 if(isLoginMutation || isIntrospection) return { req, res }
 
                 // const isCreateUserMutation = req.body?.operationName === "CreateUser"

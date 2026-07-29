@@ -71,5 +71,32 @@ builder.mutationFields((t) => ({
                 return { success: false, message: error.message || 'An Unknown Error Occured'}
             }            
         }
+    }),
+
+    deleteBusiness: t.field({
+        type: BusinessResponseRef,
+        args: {
+            businessId: t.arg.string({ required: true })
+        },
+        authScopes: {
+            isAuthenticated: true,
+        },
+        resolve: async (parent: any, { businessId }: any, ctx: Context) => {
+            const { prisma, user } = ctx;
+
+            try {
+
+                const business = await prisma.businesses.findUnique({ where: { id: businessId }})
+                if(!business) return { success: false, message: `Business with Id ${ businessId} Not Found`}
+
+                await prisma.businesses.delete({ where: { id: businessId }})
+
+                return { success: true, message: 'Business Details Deleted Successfully'}
+
+            } catch(error: any) {
+                console.log(error)
+                return { success: false, message: 'An Internal Server Error Occured'}
+            }            
+        }
     })
 }))
